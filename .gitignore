@@ -1,11 +1,11 @@
-# 忽略数据文件夹下所有CSV文件
+# ignore all files in the Data directory
 Data/*.csv
 
-# 忽略jupyter自动生成的缓存
+# ignore all cache files
 .ipynb_checkpoints/
 
-# Python缓存
+# ignore Python cache files
 __pycache__/
 
-# Mac系统隐藏文件
+# ignore MacOS system files
 .DS_Store
