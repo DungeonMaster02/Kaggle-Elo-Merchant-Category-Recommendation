@@ -9,3 +9,5 @@ __pycache__/
 
 # ignore MacOS system files
 .DS_Store
+
+tempCodeRunnerFile.py
