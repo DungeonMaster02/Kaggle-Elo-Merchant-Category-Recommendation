@@ -4,7 +4,8 @@ Download the datasets from Kaggle and put them into the `Data/` folder
 https://www.kaggle.com/competitions/elo-merchant-category-recommendation/data
 
 # ReadData
-## Purpose:acknowledge the dataset
+## Purpose:
+Acknowledge the dataset
 ## Relative Works:
 (1)Check correctness: 
 Whether id is duplicate
