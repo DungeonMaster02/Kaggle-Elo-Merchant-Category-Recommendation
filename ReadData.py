@@ -5,7 +5,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-ReadDictionary = pd.read_excel('Kaggle-Elo-Merchant-Category-Recommendation\Data\Data Dictionary.xlsx', header=2, sheet_name='train')
+ReadDictionary = pd.read_excel('Kaggle-Elo-Merchant-Category-Recommendation\Data\Data_Dictionary.xlsx', header=2, sheet_name='train')
 ReadSample = pd.read_csv('Kaggle-Elo-Merchant-Category-Recommendation\Data\sample_submission.csv', header=0).head(5)
 ReadInfo = pd.read_csv('Kaggle-Elo-Merchant-Category-Recommendation\Data\sample_submission.csv', header=0).info()
 ReadTrain = pd.read_csv('Kaggle-Elo-Merchant-Category-Recommendation/Data/train.csv')
@@ -64,45 +64,69 @@ test_count = ReadTest. shape[0]
 #     plt. ylabel('ratio')
 #     plt. show()
 
-#compare two datasets' graphs(combine variables)
-def combine_feature(df):
-    cols = df. columns
-    feature1 = df[cols[0]]. astype(str). values. tolist()
-    feature2 = df[cols[1]]. astype(str). values. tolist()
-    return pd. Series([feature1[i]+ '&'+ feature2[i] for i in range(df. shape[0])])
-# choose two features
-cols = [features[0], features[1]]
-print(cols)
-# check result of combination 
-train_com = combine_feature(ReadTrain[cols])
-print(train_com)
-train_dis = train_com. value_counts(). sort_index()/ train_count
-print(train_dis)
-test_dis = combine_feature(ReadTest[cols]). value_counts(). sort_index()/ test_count
-print(test_dis)
+# #compare two datasets' graphs(combine variables)
+# def combine_feature(df):
+#     cols = df. columns
+#     feature1 = df[cols[0]]. astype(str). values. tolist()
+#     feature2 = df[cols[1]]. astype(str). values. tolist()
+#     return pd. Series([feature1[i]+ '&'+ feature2[i] for i in range(df. shape[0])])
+# # choose two features
+# cols = [features[0], features[1]]
+# print(cols)
+# # check result of combination 
+# train_com = combine_feature(ReadTrain[cols])
+# print(train_com)
+# train_dis = train_com. value_counts(). sort_index()/ train_count
+# print(train_dis)
+# test_dis = combine_feature(ReadTest[cols]). value_counts(). sort_index()/ test_count
+# print(test_dis)
 
-# create new index
-index_dis = pd. Series(train_dis. index. tolist() + test_dis. index. tolist()). drop_duplicates()
-# fill lost data by 0
-(index_dis. map(train_dis). fillna(0)). plot()
-(index_dis. map(train_dis). fillna(0)). plot()
+# # create new index
+# index_dis = pd. Series(train_dis. index. tolist() + test_dis. index. tolist()). drop_duplicates()
+# # fill lost data by 0
+# (index_dis. map(train_dis). fillna(0)). plot()
+# (index_dis. map(train_dis). fillna(0)). plot()
 
-plt. legend(['train','test'])
-plt. xlabel('&'. join(cols))
-plt. ylabel('ratio')
-plt. show()
-n = len(features)
-for i in range(n- 1):
-    for j in range(i+1, n):
-        cols = [features[i], features[j]]
-        print(cols)
-        train_dis = combine_feature(ReadTrain[cols]). value_counts(). sort_index()/ train_count
-        test_dis = combine_feature(ReadTest[cols]). value_counts(). sort_index()/ test_count
-        index_dis = pd. Series(train_dis. index. tolist() + test_dis. index. tolist()). drop_duplicates()
-        (index_dis. map(train_dis). fillna(0)). plot()
-        (index_dis. map(test_dis). fillna(0)). plot()
-        plt. legend(['train','test'])
-        plt. xlabel('&'. join(cols))
-        plt. ylabel('ratio')
-        plt. show()
-#These graphs show that orange and blue lines are almost overlapping, which means these two dataset's have similar outlier
+# plt. legend(['train','test'])
+# plt. xlabel('&'. join(cols))
+# plt. ylabel('ratio')
+# plt. show()
+# n = len(features)
+# for i in range(n- 1):
+#     for j in range(i+1, n):
+#         cols = [features[i], features[j]]
+#         print(cols)
+#         train_dis = combine_feature(ReadTrain[cols]). value_counts(). sort_index()/ train_count
+#         test_dis = combine_feature(ReadTest[cols]). value_counts(). sort_index()/ test_count
+#         index_dis = pd. Series(train_dis. index. tolist() + test_dis. index. tolist()). drop_duplicates()
+#         (index_dis. map(train_dis). fillna(0)). plot()
+#         (index_dis. map(test_dis). fillna(0)). plot()
+#         plt. legend(['train','test'])
+#         plt. xlabel('&'. join(cols))
+#         plt. ylabel('ratio')
+#         plt. show()
+# #These graphs show that orange and blue lines are almost overlapping, which means these two dataset's have similar outlier
+
+#Read historical_transaction data
+history_transaction = pd.read_csv('Kaggle-Elo-Merchant-Category-Recommendation/Data/historical_transactions.csv', header=0)
+# print(history_transaction.head(5))
+# print(history_transaction.info())
+# print(pd.read_excel('Kaggle-Elo-Merchant-Category-Recommendation\Data\Data_Dictionary.xlsx ', header=2, sheet_name='history'))
+new_transaction = pd.read_csv('Kaggle-Elo-Merchant-Category-Recommendation/Data/new_merchant_transactions.csv', header=0)
+# print(new_transaction.head(5))
+# print(pd.read_csv('Kaggle-Elo-Merchant-Category-Recommendation\Data\new_merchant_transactions.csv', header=0).info())
+
+#compare two merchant data
+merchant = pd.read_csv('Kaggle-Elo-Merchant-Category-Recommendation/Data/merchants.csv', header=0)
+duplicate_cols = []
+
+# for col in merchant.columns:
+#     if col in new_transaction.columns:
+#         duplicate_cols.append(col)
+        
+# print(duplicate_cols)
+##find that merchant_id is not unique
+##extract and delete duplicated data
+new_transaction[duplicate_cols].drop_duplicates().shape
+new_transaction['merchant_id'].nunique()
+
